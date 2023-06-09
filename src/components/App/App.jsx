@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { NotifyOptions } from '../styles/NotifyOptions';
 import { Container } from './App.styled.jsx';
 import { Section } from 'components/Section/index.js';
 import { ContactForm } from 'components/ContactForm/index.js';
@@ -14,19 +17,20 @@ export function App() {
     const existingContact = contacts.find(cont => cont.name === contact.name);
 
     if (existingContact) {
-      alert(`Contact with name "${contact.name}" already exists!`);
-      return;
+      return toast.error(`Contact with name "${contact.name}" already exists!`, NotifyOptions);
     }
 
     setContacts(prevContacts => [...prevContacts, contact]);
+    toast.success(`Contact with name ${contact.name} is added to the contact list!`, NotifyOptions);
   };
 
-  const handleDeleteContact = id => {
+  const handleDeleteContact = (id, name) => {
     setContacts(prevContacts => prevContacts.filter(contact => contact.id !== id));
+    toast.info(`Contact with with name ${name} has been deleted!`, NotifyOptions);
   };
 
   const handleFilterChange = e => {
-    setFilter({ filter: e.target.value });
+    setFilter(e.target.value);
   };
 
   const getFilteredContacts = () => {
@@ -40,11 +44,12 @@ export function App() {
       <Section title="Phonebook">
         <ContactForm onSubmit={formSubmitHandler} />
       </Section>
-
+      <ToastContainer />
       <Section title="Contacts">
         <Filter title="Find contact by name" onChange={handleFilterChange} value={filter} />
         <ContactList contacts={getFilteredContacts()} onDeleteContact={handleDeleteContact} />
       </Section>
+      <ToastContainer />
     </Container>
   );
 }

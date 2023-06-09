@@ -10,7 +10,7 @@ export function ContactList({ contacts, onDeleteContact }) {
             <Contact>
               {name}: {number}
             </Contact>
-            <DeleteButton onClick={() => onDeleteContact(id)}>Delete</DeleteButton>
+            <DeleteButton onClick={() => onDeleteContact(id, name)}>Delete</DeleteButton>
           </ContactItem>
         );
       })}
